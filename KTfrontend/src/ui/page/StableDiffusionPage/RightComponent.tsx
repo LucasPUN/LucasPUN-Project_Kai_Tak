@@ -4,6 +4,11 @@ import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 import ButtonBase from "@mui/material/ButtonBase";
 
+interface ImageObject {
+  title: string;
+  url: string;
+}
+
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
   position: "relative",
   height: 200,
@@ -61,18 +66,11 @@ const ImageBackdrop = styled("span")(({ theme }) => ({
   transition: theme.transitions.create("opacity"),
 }));
 
-const ImageMarked = styled("span")(({ theme }) => ({
-  height: 3,
-  width: 18,
-  backgroundColor: theme.palette.common.white,
-  position: "absolute",
-  bottom: -2,
-  left: "calc(50% - 9px)",
-  transition: theme.transitions.create("opacity"),
-}));
+interface RightComponentProps {
+  images: ImageObject[]; // Specify the type of the images prop
+}
 
-
-export default function RightComponent({images}) {
+export default function RightComponent({images}:RightComponentProps) {
   
   return (
     <>

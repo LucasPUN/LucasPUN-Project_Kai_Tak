@@ -1,6 +1,5 @@
-import React from 'react';
-import { Grid, Typography, TextField, Button, Box } from '@mui/material';
 import DrawIcon from '@mui/icons-material/Draw';
+import { Box, Button, TextField, Typography } from '@mui/material';
 
 export default function LeftComponent() {
   return (
