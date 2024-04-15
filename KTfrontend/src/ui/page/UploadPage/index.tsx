@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import {Box, CircularProgress, Container, Divider, Typography} from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, CircularProgress, Container, Divider, Typography } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import AWS from 'aws-sdk';
-import {styled} from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import TopNavBar from "../../compoent/TopNavBar.tsx";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -31,11 +31,10 @@ const VisuallyHiddenInput = styled('input')({
     width: 1,
 });
 
-
 export default function UploadVideoPage() {
     const [uploading, setUploading] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
-    const [selectedFile, setSelectedFile] = useState<File | null>(null); // Add type declaration for selectedFile
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [fileDetails, setFileDetails] = useState<string>('');
     const [agreeTerms, setAgreeTerms] = useState(false);
 
@@ -49,7 +48,7 @@ export default function UploadVideoPage() {
     const handleUpload = async (file: File | null) => {
         if (!file) return;
 
-        const folderName = 'new_folder'; // Specify the folder name , format : if use firebase for login , userID+useName ? 001LucasPun
+        const folderName = 'new_folder';
         const fileName = file.name;
 
         const params = {
@@ -67,6 +66,7 @@ export default function UploadVideoPage() {
             console.error('Error uploading file:', err);
         }
     };
+
     useEffect(() => {
         const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
             e.preventDefault();
@@ -78,33 +78,30 @@ export default function UploadVideoPage() {
             setIsDragging(false);
         };
 
-
         const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
             e.preventDefault();
             setIsDragging(false);
-            const file = e.dataTransfer.files[0];
+            const file = (e as unknown as React.DragEvent<HTMLDivElement>).dataTransfer.files[0];
             setSelectedFile(file);
             setFileDetails(`File Name: ${file.name}, Size: ${file.size} bytes, Type: ${file.type}`);
         };
 
-        // Add event listeners to handle drag and drop on the entire document
-        document.body.addEventListener('dragenter', handleDragEnter);
-        document.body.addEventListener('dragover', handleDragEnter);
-        document.body.addEventListener('dragleave', handleDragLeave);
-        document.body.addEventListener('drop', handleDrop);
+        document.body.addEventListener('dragenter', handleDragEnter as any);
+        document.body.addEventListener('dragover', handleDragEnter as any);
+        document.body.addEventListener('dragleave', handleDragLeave as any);
+        document.body.addEventListener('drop', handleDrop as any);
 
         return () => {
-            // Cleanup event listeners when component unmounts
-            document.body.removeEventListener('dragenter', handleDragEnter);
-            document.body.removeEventListener('dragover', handleDragEnter);
-            document.body.removeEventListener('dragleave', handleDragLeave);
-            document.body.removeEventListener('drop', handleDrop);
+            document.body.removeEventListener('dragenter', handleDragEnter as any);
+            document.body.removeEventListener('dragover', handleDragEnter as any);
+            document.body.removeEventListener('dragleave', handleDragLeave as any);
+            document.body.removeEventListener('drop', handleDrop as any);
         };
     }, []);
 
     return (
         <>
-            <TopNavBar/>
+            <TopNavBar />
             <Box
                 style={{
                     height: '80vh',
@@ -112,7 +109,7 @@ export default function UploadVideoPage() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    textAlign: 'center', // 新增這一行
+                    textAlign: 'center',
                     backgroundColor: isDragging ? 'lightblue' : 'white',
                 }}
             >
@@ -137,13 +134,13 @@ export default function UploadVideoPage() {
                             border: `2px dashed ${isDragging ? 'blue' : 'gray'}`,
                             padding: '20px',
                             borderRadius: '10px',
-                            position: 'relative', // Add position relative to the container
-                            overflow: 'hidden', // Hide overflow content
+                            position: 'relative',
+                            overflow: 'hidden',
                         }}
                         onClick={() => {
                             const fileInput = document.getElementById('file-input');
                             if (fileInput) {
-                                fileInput.click(); // Trigger file input click event
+                                fileInput.click();
                             }
                         }}
                     >
@@ -156,8 +153,8 @@ export default function UploadVideoPage() {
                                 left: 0,
                                 width: '100%',
                                 height: '100%',
-                                opacity: 0, // Make input element transparent
-                                cursor: 'pointer', // Show pointer cursor when hovering
+                                opacity: 0,
+                                cursor: 'pointer',
                             }}
                             onChange={handleFileInput}
                         />
@@ -204,7 +201,6 @@ export default function UploadVideoPage() {
                         disabled={!selectedFile}
                     >
                         Upload file
-                        {/* <VisuallyHiddenInput type="file" /> */}
                     </Button>
                     {uploading && <CircularProgress style={{marginTop: '20px'}}/>}
                 </Container>
