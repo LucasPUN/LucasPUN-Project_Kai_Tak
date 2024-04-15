@@ -1,23 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { Box, CircularProgress, Container, Divider, Typography } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import AWS from 'aws-sdk';
-// import { styled } from '@mui/material/styles';
+import { Box, CircularProgress, Container, Divider, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
-import TopNavBar from "../../compoent/TopNavBar.tsx";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import AWS from 'aws-sdk';
+import React, { useEffect, useState } from 'react';
+import TopNavBar from "../../compoent/TopNavBar.tsx";
 
 const S3_BUCKET = 'proecttesting';
 const REGION = 'ap-southeast-1';
-const ACCESS_KEY = 'AKIAZQ3DP43JAHUVQRTN'; // Update with your actual access key
-const SECRET_ACCESS_KEY = 'oeQV4Q0tFK8k39E3KkMRcdBIuKn4IKbmexjvsVB0'; // Update with your actual secret access key
+const ACCESS_KEY = 'your-access-key'; // Update with your actual access key
+const SECRET_ACCESS_KEY = 'your-secret-access-key'; // Update with your actual secret access key
 
-const s3 = new AWS.S3({
+AWS.config.update({
     accessKeyId: ACCESS_KEY,
     secretAccessKey: SECRET_ACCESS_KEY,
     region: REGION,
 });
+
+// const sts = new AWS.STS(); // Initialize the AWS STS
+const s3 = new AWS.S3(); // Initialize the AWS S3
 
 export default function UploadVideoPage() {
     const [isDragging, setIsDragging] = useState(false);
@@ -38,14 +40,24 @@ export default function UploadVideoPage() {
         const folderName = 'new_folder';
         const fileName = file.name;
 
-        const params = {
-            Bucket: S3_BUCKET,
-            Key: `${folderName}/${fileName}`,
-            Body: file,
-            ACL: 'public-read'
-        };
-
+        // Call STS to get temporary credentials
         try {
+            // const stsData = await sts.getCallerIdentity().promise();
+            // const accountId = stsData.Account;
+
+            // Construct the key using the folderName and fileName
+            const key = `${folderName}/${fileName}`;
+
+            // Set up the parameters for the S3 upload
+            const params = {
+                Bucket: S3_BUCKET,
+                Key: key,
+                Body: file,
+                ACL: 'public-read',
+                // Optionally, you can add additional metadata or configurations here
+            };
+
+            // Upload the file to S3 using the configured parameters
             const data = await s3.upload(params).promise();
             console.log('Upload successful:', data.Location);
             setFileDetails('');

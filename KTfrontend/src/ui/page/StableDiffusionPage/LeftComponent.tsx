@@ -1,7 +1,14 @@
 import DrawIcon from '@mui/icons-material/Draw';
 import { Box, Button, TextField, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 export default function LeftComponent() {
+  const navigate = useNavigate();
+
+  const handleGenerateClick = () => {
+      navigate('/generating');
+  }; 
+
   return (
     <Box>
       <Typography
@@ -47,6 +54,7 @@ export default function LeftComponent() {
           justifyContent: "center",
           display: "flex",
         }}
+        onClick={handleGenerateClick}
       >
         Get Creative
       </Button>
