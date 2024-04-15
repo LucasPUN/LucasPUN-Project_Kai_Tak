@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, CircularProgress, Container, Divider, Typography } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import AWS from 'aws-sdk';
-import { styled } from '@mui/material/styles';
+// import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import TopNavBar from "../../compoent/TopNavBar.tsx";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -19,20 +19,7 @@ const s3 = new AWS.S3({
     region: REGION,
 });
 
-const VisuallyHiddenInput = styled('input')({
-    clip: 'rect(0 0 0 0)',
-    clipPath: 'inset(50%)',
-    height: 1,
-    overflow: 'hidden',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    whiteSpace: 'nowrap',
-    width: 1,
-});
-
 export default function UploadVideoPage() {
-    const [uploading, setUploading] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [fileDetails, setFileDetails] = useState<string>('');
@@ -158,8 +145,8 @@ export default function UploadVideoPage() {
                             }}
                             onChange={handleFileInput}
                         />
-                        <CloudUploadIcon fontSize='large' color='disabled'/>
-                        <Typography variant="body1" style={{color: isDragging ? 'blue' : 'inherit'}}>
+                        <CloudUploadIcon fontSize='large' color='disabled' />
+                        <Typography variant="body1" style={{ color: isDragging ? 'blue' : 'inherit' }}>
                             {isDragging ? 'Drop your video file / picture here' : 'Drag & drop video file  / picture here, or click to select'}
                         </Typography>
                     </Box>
@@ -196,13 +183,13 @@ export default function UploadVideoPage() {
                         role={undefined}
                         variant="contained"
                         tabIndex={-1}
-                        startIcon={<CloudUploadIcon/>}
+                        startIcon={<CloudUploadIcon />}
                         onClick={() => handleUpload(selectedFile)}
                         disabled={!selectedFile}
                     >
                         Upload file
                     </Button>
-                    {uploading && <CircularProgress style={{marginTop: '20px'}}/>}
+                    {<CircularProgress style={{ marginTop: '20px' }} />}
                 </Container>
             </Box>
         </>
