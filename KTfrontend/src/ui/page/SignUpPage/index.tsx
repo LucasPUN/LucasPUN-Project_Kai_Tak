@@ -4,13 +4,13 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import logo from '../LoginPage/Venturenix_2024.png'
-import {useNavigate} from "react-router-dom";
+// import {useNavigate} from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import Paper from "@mui/material/Paper";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 
 export default function SignUpPage() {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const defaultTheme = createTheme();
 
     return (
