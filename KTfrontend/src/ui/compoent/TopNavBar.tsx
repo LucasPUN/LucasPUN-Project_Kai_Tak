@@ -2,16 +2,48 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faHouse} from '@fortawesome/free-solid-svg-icons';
+import {faHouse, faUser} from '@fortawesome/free-solid-svg-icons';
 import {useNavigate} from "react-router-dom";
+import {LoginUserContext} from "../../App.tsx";
+import {useContext} from "react";
+import {CircularProgress, IconButton} from "@mui/material";
+import { Link } from 'react-router-dom';
+import * as FirebaseAuthService from "../../authService/FirebaseAuthService.ts"
 
 export default function TopNavBar() {
     const navigate = useNavigate();
+    const loginUser = useContext(LoginUserContext);
 
     const handleHomeClick = () => {
         navigate('/');
+    };
+
+    const renderLoginContainer = () => {
+        if (loginUser) {
+            return (
+                <>
+                    <Typography variant="body1" sx={{ color: 'white' }}>
+                        {loginUser.email}
+                    </Typography>
+                    <IconButton onClick={() => FirebaseAuthService.handleSignOut()}>
+                        <FontAwesomeIcon icon={faUser} style={{ color: '#05f0ec' }} />
+                    </IconButton>
+                </>
+            );
+        } else if (loginUser === null) {
+            return (
+                <Link to="/">
+                    <IconButton>
+                        <FontAwesomeIcon icon={faUser} style={{ color: '#ffffff' }} />
+                    </IconButton>
+                </Link>
+            );
+        } else {
+            return (
+                <CircularProgress color="inherit" size={24} />
+            );
+        }
     };
 
     return (
@@ -24,7 +56,7 @@ export default function TopNavBar() {
                     <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
 
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    {renderLoginContainer()}
                 </Toolbar>
             </AppBar>
         </Box>

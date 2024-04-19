@@ -13,6 +13,12 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import video from './dummy_video.mp4';
 import {useNavigate} from "react-router-dom";
 import logo from '../LoginPage/Venturenix_2024.png'
+import * as FirebaseAuthService from "../../../authService/FirebaseAuthService.ts"
+import {useContext, useEffect, useState} from "react";
+import {LoginUserContext} from "../../../App.tsx";
+import {GoogleLoginButton} from "react-social-login-buttons";
+
+
 
 function Copyright(props: any) {
     return (
@@ -32,23 +38,40 @@ const defaultTheme = createTheme();
 
 export default function LoginPage() {
     const navigate = useNavigate();
+    const [email, setEmail] = useState<string>("")
+    const [password, setPassword] = useState<string>("")
+    const loginUser = useContext(LoginUserContext);
+    const [isLoginFail,setIsLoginFail] = useState<boolean>(false)
+
 
     const handleSignUpClick = () => {
         navigate('/signup');
     };
 
-    const handleSignInClick = () => {
-        navigate('/gen');
+    const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(event.target.value);
+    }
+
+    const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPassword(event.target.value);
+    }
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        console.log(email,password)
+        const loginResult = await FirebaseAuthService.handleSignInWithEmailAndPassword(email, password);
+        if (loginResult) {
+            alert("login Success");
+        } else {
+            setIsLoginFail(true);
+        }
     };
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-    };
+    useEffect(() => {
+        if (loginUser) {
+            navigate("/gen")
+        }
+    }, [loginUser])
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -99,6 +122,8 @@ export default function LoginPage() {
                                 name="email"
                                 autoComplete="email"
                                 autoFocus
+                                onChange={handleEmailChange}
+                                value={email}
                             />
                             <TextField
                                 margin="normal"
@@ -109,6 +134,8 @@ export default function LoginPage() {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
+                                onChange={handlePasswordChange}
+                                value={password}
                             />
                             <FormControlLabel
                                 control={<Checkbox value="remember" color="primary" />}
@@ -119,10 +146,14 @@ export default function LoginPage() {
                                 fullWidth
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
-                                onClick={handleSignInClick}
                             >
                                 Sign In
                             </Button>
+
+                            <GoogleLoginButton onClick={() => {
+                                FirebaseAuthService.handleSignInWithGoogle()
+                            }}/>
+
                             <Grid container>
                                 <Grid item xs>
                                     <Link href="#" variant="body2">
