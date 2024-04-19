@@ -4,19 +4,33 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import logo from '../LoginPage/Venturenix_2024.png'
-// import {useNavigate} from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import Paper from "@mui/material/Paper";
-import {createTheme, ThemeProvider} from "@mui/material/styles";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useState } from "react";
+import * as FirebaseAuthService from "../../../authService/FirebaseAuthService.ts"
+
+const defaultTheme = createTheme();
 
 export default function SignUpPage() {
-    // const navigate = useNavigate();
-    const defaultTheme = createTheme();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const handleSignUp = async () => {
+        try {
+            const userCredential = await FirebaseAuthService.signUpWithEmailAndPassword(email, password);
+            console.log('New user created:', userCredential);
+        } catch (error) {
+            console.error('Error creating new user:', error);
+            setErrorMessage(error.message); // Update error message state
+        }
+    };
 
     return (
         <ThemeProvider theme={defaultTheme}>
-            <Grid container component="main" sx={{height: '100vh'}}>
-                <CssBaseline/>
+            <Grid container component="main" sx={{ height: '100vh' }}>
+                <CssBaseline />
                 <Grid
                     item
                     xs={false}
@@ -44,20 +58,38 @@ export default function SignUpPage() {
                         <Typography variant="h5" gutterBottom mb={4}>Sign Up</Typography>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
-                                <TextField fullWidth label="Name"/>
+                                <TextField
+                                    fullWidth
+                                    label="Email"
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
                             </Grid>
                             <Grid item xs={12}>
-                                <TextField fullWidth label="Email" type="email"/>
+                                <TextField
+                                    fullWidth
+                                    label="Password"
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
                             </Grid>
                             <Grid item xs={12}>
-                                <TextField fullWidth label="Password" type="password"/>
+                                <Button
+                                    variant="contained"
+                                    fullWidth
+                                    color="primary"
+                                    onClick={handleSignUp}
+                                >
+                                    Sign Up
+                                </Button>
                             </Grid>
-                            <Grid item xs={12}>
-                                <TextField fullWidth label="Phone Number" type="tel"/>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Button variant="contained" fullWidth color="primary">Sign Up</Button>
-                            </Grid>
+                            {errorMessage && (
+                                <Grid item xs={12}>
+                                    <Typography color="error">{errorMessage}</Typography>
+                                </Grid>
+                            )}
                         </Grid>
                     </Box>
                 </Grid>

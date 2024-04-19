@@ -5,9 +5,12 @@ import {
     GoogleAuthProvider,
     onAuthStateChanged,
     signInWithEmailAndPassword,
-    signInWithPopup, signOut
+    signInWithPopup,
+    signOut,
+    createUserWithEmailAndPassword
 } from "firebase/auth";
 import {UserData} from "../data/UserData.ts";
+
 
 
 export const serviceInit = () => {
@@ -79,3 +82,16 @@ export const handleSignOut = async () => {
         console.log(error);
     }
 }
+
+export const signUpWithEmailAndPassword = async (email:string, password:string) => {
+    const auth = getAuth();
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        console.log('New user created:', user);
+        return user;
+    } catch (error) {
+        console.error('Error creating new user:', error);
+        throw error;
+    }
+};
