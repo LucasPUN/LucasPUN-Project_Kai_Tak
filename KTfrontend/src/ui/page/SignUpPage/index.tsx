@@ -23,7 +23,7 @@ export default function SignUpPage() {
             console.log('New user created:', userCredential);
         } catch (error) {
             console.error('Error creating new user:', error);
-            setErrorMessage(error.message); // Update error message state
+            setErrorMessage((error as Error).message) // Update error message state
         }
     };
 
