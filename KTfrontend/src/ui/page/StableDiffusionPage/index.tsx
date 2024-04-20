@@ -44,7 +44,7 @@ export default function StableDiffusionPage() {
                 height="90vh"
                 sx={{ backgroundColor: "#202020" }}
             >
-                <Box>
+                <Box sx={{ marginLeft: '20px' }}>
                     <LeftComponent />
                 </Box>
                 <RightComponent images={images} />

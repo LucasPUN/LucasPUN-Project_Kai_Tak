@@ -1,9 +1,8 @@
-
-import { Grid, LinearProgress } from "@mui/material";
+import {Grid, LinearProgress} from "@mui/material";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import modal1 from "../../../pic/modal1.jpg.webp";
 import TopNavBar from "../../compoent/TopNavBar.tsx";
 
@@ -43,9 +42,17 @@ export default function GeneratingPage() {
                         <img src={modal1} alt={`sea image`} style={{width: '50%'}} onClick={handlePhotoClick}/>
                     </Grid>
 
-                    <Grid container justifyContent="center" alignItems="center" sx={{ position: 'relative', padding: 4 }}>
+                    <Grid container justifyContent="center" alignItems="center" sx={{position: 'relative', padding: 4}}>
                         {/* Progress bar */}
-                        <LinearProgress sx={{ width: '100%', height: 10, position: 'absolute', top: 0, left: 0, zIndex: 9999, marginTop: "30px"}} />
+                        <LinearProgress sx={{
+                            width: '100%',
+                            height: 10,
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            zIndex: 9999,
+                            marginTop: "30px"
+                        }}/>
                     </Grid>
 
                 </Grid>
@@ -62,7 +69,6 @@ export default function GeneratingPage() {
                         </Grid>
                     ))}
                 </Grid>
-
 
 
             </Grid>
