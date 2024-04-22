@@ -75,7 +75,7 @@ export default function LoginPage() {
 
     return (
         <ThemeProvider theme={defaultTheme}>
-            <Grid container component="main" sx={{ height: '100vh' }}>
+            <Grid container component="main" sx={{ height: '100vh' , minWidth: '1500px'}}>
                 <CssBaseline />
                 <Grid
                     item

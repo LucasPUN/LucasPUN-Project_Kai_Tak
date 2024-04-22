@@ -1,4 +1,4 @@
-import {Grid} from "@mui/material";
+import {Container, Grid} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {styled} from "@mui/material/styles";
 import ButtonBase from "@mui/material/ButtonBase";
@@ -89,9 +89,8 @@ export default function RightComponent({images}: RightComponentProps) {
                         focusRipple
                         key={image.title}
                         style={{
-                            // width: image.width,
-                            width: "100%", // Each item takes full width of its container
-                            maxWidth: "500px", // Limit maximum width of each item if needed
+                            width: "35vw",
+                            height: "35vh"
                         }}
                         // onClick={() => handleImageClick(image.onclick)}
                     >
@@ -117,6 +116,7 @@ export default function RightComponent({images}: RightComponentProps) {
                     </ImageButton>
                 ))}
             </Grid>
+
         </>
     )
 } 

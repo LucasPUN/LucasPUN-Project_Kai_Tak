@@ -37,17 +37,19 @@ const images = [
 export default function StableDiffusionPage() {
     return (
         <>
-            <TopNavBar />
+            <TopNavBar/>
             <Box
                 display="flex"
                 alignItems="center"
                 height="90vh"
-                sx={{ backgroundColor: "#202020" }}
+                sx={{backgroundColor: "#202020"}}
             >
-                <Box sx={{ marginLeft: '20px' }}>
-                    <LeftComponent />
+                <Box sx={{marginLeft: '20px'}}>
+                    <LeftComponent/>
                 </Box>
-                <RightComponent images={images} />
+                <Box sx={{marginLeft: '20px'}}>
+                    <RightComponent images={images}/>
+                </Box>
             </Box>
         </>
     );

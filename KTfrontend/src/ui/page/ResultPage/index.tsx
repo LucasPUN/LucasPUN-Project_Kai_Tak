@@ -2,12 +2,21 @@ import modal1 from "../../../pic/modal1.jpg.webp";
 import modal2 from "../../../pic/modal2.jpg.webp";
 import modal21 from "../../../pic/modal21.jpg.webp";
 import modal3 from "../../../pic/modal3.jpg.webp";
-import {useState} from "react";
-import {Box, IconButton, Typography, Button, Grid, Container} from "@mui/material";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import {Box, Typography, Button, Grid} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import TopNavBar from "../../compoent/TopNavBar.tsx";
+import React, {useRef, useState} from 'react';
+import {Swiper, SwiperSlide} from 'swiper/react';
+import { EffectCoverflow, Pagination } from 'swiper/modules';
+
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/effect-coverflow';
+import 'swiper/css/pagination';
+
+import './styles.css';
+
 
 const images = [
     {
@@ -37,29 +46,21 @@ const images = [
 ];
 
 export default function ResultPage() {
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
     const navigate = useNavigate();
 
     const handleSubmitClick = () => {
         navigate('/upload');
     };
 
-    const handleNextImage = () => {
-        setCurrentImageIndex((prevIndex) =>
-            prevIndex === images.length - 1 ? 0 : prevIndex + 1
-        );
-    };
-
-    const handlePrevImage = () => {
-        setCurrentImageIndex((prevIndex) =>
-            prevIndex === 0 ? images.length - 1 : prevIndex - 1
-        );
+    const handleSlideChange = (swiper: any) => {
+        setCurrentSlideIndex(swiper.activeIndex);
     };
 
     const downloadImage = () => {
         const link = document.createElement('a');
-        link.href = images[currentImageIndex].url;
-        link.download = images[currentImageIndex].title;
+        link.href = images[currentSlideIndex].url;
+        link.download = images[currentSlideIndex].title;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -68,64 +69,55 @@ export default function ResultPage() {
     return (
         <>
             <TopNavBar/>
-            <Container>
-                <Grid
-                    container
-                    justifyContent="center"
-                    alignItems="center"
-                    sx={{minHeight: '100vh'}}
-                >
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            textAlign: 'center',
-                            gap: '20px', // Added gap between the image and buttons
-                        }}
-                    >
-                        <Box sx={{display: 'flex', alignItems: 'center'}}>
-                            {/* Use flexbox layout for image and buttons */}
-                            <IconButton onClick={handlePrevImage} color="primary">
-                                <ChevronLeftIcon/>
-                            </IconButton>
-                            <img
-                                src={images[currentImageIndex].url}
-                                alt={images[currentImageIndex].title}
-                                style={{maxWidth: '60%', maxHeight: '60%'}}
-                            />
-                            <IconButton onClick={handleNextImage} color="primary">
-                                <ChevronRightIcon/>
-                            </IconButton>
-                        </Box>
 
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                textAlign: 'center', // Center align the text
-                                marginLeft: '20px', // Added margin to separate the image from the text/buttons
-                            }}
-                        >
-                            <Typography variant="h3">
-                                {images[currentImageIndex].title}
-                            </Typography>
+            <Swiper
+                effect={'coverflow'}
+                grabCursor={true}
+                centeredSlides={true}
+                slidesPerView={'auto'}
+                coverflowEffect={{
+                    rotate: 50,
+                    stretch: 0,
+                    depth: 100,
+                    modifier: 1,
+                    slideShadows: true,
+                }}
+                pagination={true}
+                className="mySwiper"
+                onSlideChange={handleSlideChange}
+                modules={[EffectCoverflow, Pagination]}
+            >
+                {images.map((image, index) => (
+                    <SwiperSlide key={index} style={{width: '50vw', height: '50vh'}}>
+                        <img src={image.url} alt={image.title}/>
+                    </SwiperSlide>
+                ))}
+            </Swiper>
 
-                            <Button variant="contained" color="primary" onClick={downloadImage}>
-                                Download
-                            </Button>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                    marginLeft: '20px',
+                    marginTop: '20px'
+                }}
+            >
+                <Typography variant="h3">
+                    {images[currentSlideIndex].title}
+                </Typography>
 
-                            <Button variant="contained" color="primary" /* onClick={handleSubmit} */
-                                    style={{marginTop: '10px'}} onClick={handleSubmitClick}>
-                                Submit
-                            </Button>
-                        </Box>
-                    </Box>
-                </Grid>
-            </Container>
+                <Button variant="contained" color="primary" onClick={downloadImage}>
+                    Download
+                </Button>
+
+                <Button variant="contained" color="primary" /* onClick={handleSubmit} */
+                        style={{marginTop: '10px'}} onClick={handleSubmitClick}>
+                    Submit
+                </Button>
+            </Box>
         </>
     );
 }
