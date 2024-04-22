@@ -2,10 +2,10 @@ import modal1 from "../../../pic/modal1.jpg.webp";
 import modal2 from "../../../pic/modal2.jpg.webp";
 import modal21 from "../../../pic/modal21.jpg.webp";
 import modal3 from "../../../pic/modal3.jpg.webp";
-import {Box, Typography, Button, Grid} from "@mui/material";
+import {Box, Typography, Button} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import TopNavBar from "../../compoent/TopNavBar.tsx";
-import React, {useRef, useState} from 'react';
+import {useState} from 'react';
 import {Swiper, SwiperSlide} from 'swiper/react';
 import { EffectCoverflow, Pagination } from 'swiper/modules';
 
